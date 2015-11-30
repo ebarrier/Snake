@@ -8,24 +8,22 @@ import javafx.scene.Node;
 
 public class Snake extends Group {
 
-	private Direction direction;
+	private Direction direction = Direction.DOWN;
+	private Direction directionOrder;
 	private BodyPart head;
 	private ObservableList<Node> snake;
-	
-	public static boolean isOpposite(Direction one, Direction two) {
-		return false;
-	}
+
 
 	public Snake() {
 
-		//BodyPart snake = new BodyPart(1, 1);
+		// BodyPart snake = new BodyPart(1, 1);
 		// this.getChildren().add(snake);
 
 		for (int i = 0; i < 10; i++) {
 			BodyPart snake = new BodyPart(i + 3, 3);
 			this.getChildren().add(snake);
 		}
-		
+
 		head = (BodyPart) this.getChildren().get(0);
 		snake = this.getChildren();
 	}
@@ -34,21 +32,25 @@ public class Snake extends Group {
 
 		ObservableList<Node> children = this.getChildren();
 		int size = children.size();
-		
+
 		if (size > 1) {
 			for (int i = size - 1; i > 0; i--) {
 				BodyPart prev = (BodyPart) snake.get(i - 1);
 				BodyPart current = (BodyPart) snake.get(i);
 				current.setX(prev.getX());
 				current.setY(prev.getY());
-			}			
+			}
 		}
 	}
 
 	public void move() {
-
+		
+		if (null != directionOrder) {
+			direction = directionOrder;
+			directionOrder = null;
+		}
+		
 		moveBody();
-
 		switch (direction) {
 		case DOWN:
 			head.setY(head.getY() + BodyPart.SIZE);
@@ -64,12 +66,23 @@ public class Snake extends Group {
 			break;
 		}
 	}
-	
 
 	public void setDirection(Direction direction) {
 		if (!isOpposite(this.direction, direction)) {
-			this.direction = direction;
+			this.directionOrder = direction;
 		}
 	}
-
+	
+	public static boolean isOpposite(Direction one, Direction two) {
+		if (Direction.RIGHT.equals(one) && Direction.LEFT.equals(two)
+				|| Direction.RIGHT.equals(two) && Direction.LEFT.equals(one)) {
+			return true;
+		}
+		
+		if (Direction.UP.equals(one) && Direction.DOWN.equals(two)
+				|| Direction.UP.equals(two) && Direction.DOWN.equals(one)) {
+			return true;
+		}
+		return false;
+	}
 }

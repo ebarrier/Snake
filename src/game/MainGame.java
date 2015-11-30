@@ -1,5 +1,8 @@
 package game;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.sun.javafx.scene.traversal.Direction;
 
 import javafx.application.Application;
@@ -27,26 +30,33 @@ public class MainGame extends Application {
 		Scene scene = new Scene(layout, 1000, 500);
 		primaryStage.setTitle("Snake");
 		primaryStage.setScene(scene);
+		primaryStage.setOnCloseRequest(event -> {
+			System.exit(0);
+		});
 		primaryStage.show();
+		
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				snake.move();		
+			}
+		}, 100, 100);
 		
 		primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			switch(event.getCode()) {
 			case LEFT:
 				snake.setDirection(Direction.LEFT);
-				snake.move();
 				break;
 			case RIGHT:
 				snake.setDirection(Direction.RIGHT);
-				snake.move();
 				break;
 			case UP:
 				snake.setDirection(Direction.UP);
-				snake.move();
 				break;
 			case DOWN:
 				snake.setDirection(Direction.DOWN);
-				snake.move();
-				break;			
+				break;		
 			}
 		});
 		
