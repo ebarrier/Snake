@@ -11,6 +11,10 @@ public class Snake extends Group {
 	private Direction direction;
 	private BodyPart head;
 	private ObservableList<Node> snake;
+	
+	public static boolean isOpposite(Direction one, Direction two) {
+		return false;
+	}
 
 	public Snake() {
 
@@ -60,10 +64,12 @@ public class Snake extends Group {
 			break;
 		}
 	}
-
+	
 
 	public void setDirection(Direction direction) {
-		this.direction = direction;
+		if (!isOpposite(this.direction, direction)) {
+			this.direction = direction;
+		}
 	}
 
 }
