@@ -1,4 +1,4 @@
-# Snake Game
+﻿# Snake Game
 Snake game is a school Java project for the 'Basic Programming', semester 1.
 
 ##Author
@@ -6,7 +6,7 @@ Author of  project is Etienne Barrier.
 Author can be contacted at ebarrier@itcollege.ee.
 
 ## License
-MIT license: [LICENSE file in repo](https://github.com/ebarrier/Snake/blob/master/LICENSE))
+MIT license: [LICENSE file in repo](https://github.com/ebarrier/Snake/blob/master/LICENSE)
 
 ## Description
 The 'Snake Game' is yet another code for playing the world-known game **Snake**.
