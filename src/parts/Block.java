@@ -19,10 +19,9 @@ public class Block extends Rectangle {
 	
 	public static final int SIZE = 20;
 	
-	
 	public Block() {
 	}
-	
+
 	public Block(int x, int y) {
 		setX(x * SIZE);
 		setY(y * SIZE);

@@ -58,6 +58,7 @@ public class Snake extends Group {
 			direction = directionOrder;
 			directionOrder = null;
 		}
+
 		
 		isBorderCollision();
 		isSnakeCollision();
@@ -99,6 +100,7 @@ public class Snake extends Group {
 		return false;
 	}
 
+	
 	public boolean isSnakeCollision() {
 		for (int i = 1; i < this.getChildren().size(); i++) {
 			Block current = (Block) snake.get(i);
