@@ -68,7 +68,11 @@ public class MainGame extends Application {
 				break;
 			case DOWN:
 				snake.setDirection(Direction.DOWN);
-				break;		
+				break;
+			case ESCAPE:
+				System.exit(0);
+			default:
+				break;
 			}
 		});
 		
