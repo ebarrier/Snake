@@ -24,11 +24,13 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import parts.Apple;
 import parts.Snake;
 
 public class MainGame extends Application {
 
-	Snake snake = new Snake();	
+	Snake snake = new Snake();
+	Apple apple = new Apple();
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -37,11 +39,13 @@ public class MainGame extends Application {
 		ObservableList<Node> components = layout.getChildren();
 		
 		components.add(snake);
+		components.add(apple);
 		
 		
 		Scene scene = new Scene(layout, 1000, 500);
 		primaryStage.setTitle("Snake");
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.setOnCloseRequest(event -> {
 			System.exit(0);
 		});
@@ -81,5 +85,6 @@ public class MainGame extends Application {
 	public static void main(String[] args) {
         launch(args);
     }
+	
 
 }

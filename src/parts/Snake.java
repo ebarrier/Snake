@@ -21,9 +21,8 @@ public class Snake extends Group {
 
 	private Direction direction = Direction.DOWN;
 	private Direction directionOrder;
-	private BodyPart head;
+	private Block head;
 	private ObservableList<Node> snake;
-
 
 	public Snake() {
 
@@ -31,23 +30,22 @@ public class Snake extends Group {
 		// this.getChildren().add(snake);
 
 		for (int i = 0; i < 10; i++) {
-			BodyPart snake = new BodyPart(i + 3, 3);
+			Block snake = new Block(i + 3, 3);
 			this.getChildren().add(snake);
 		}
 
-		head = (BodyPart) this.getChildren().get(0);
+		head = (Block) this.getChildren().get(0);
 		snake = this.getChildren();
 	}
 
 	private void moveBody() {
 
-		ObservableList<Node> children = this.getChildren();
-		int size = children.size();
+		int size = snake.size();
 
 		if (size > 1) {
 			for (int i = size - 1; i > 0; i--) {
-				BodyPart prev = (BodyPart) snake.get(i - 1);
-				BodyPart current = (BodyPart) snake.get(i);
+				Block prev = (Block) snake.get(i - 1);
+				Block current = (Block) snake.get(i);
 				current.setX(prev.getX());
 				current.setY(prev.getY());
 			}
@@ -55,25 +53,29 @@ public class Snake extends Group {
 	}
 
 	public void move() {
-		
+
 		if (null != directionOrder) {
 			direction = directionOrder;
 			directionOrder = null;
 		}
 		
+		isBorderCollision();
+		isSnakeCollision();
 		moveBody();
 		switch (direction) {
 		case DOWN:
-			head.setY(head.getY() + BodyPart.SIZE);
+			head.setY(head.getY() + Block.SIZE);
 			break;
 		case UP:
-			head.setY(head.getY() - BodyPart.SIZE);
+			head.setY(head.getY() - Block.SIZE);
 			break;
 		case LEFT:
-			head.setX(head.getX() - BodyPart.SIZE);
+			head.setX(head.getX() - Block.SIZE);
 			break;
 		case RIGHT:
-			head.setX(head.getX() + BodyPart.SIZE);
+			head.setX(head.getX() + Block.SIZE);
+			break;
+		default:
 			break;
 		}
 	}
@@ -83,17 +85,37 @@ public class Snake extends Group {
 			this.directionOrder = direction;
 		}
 	}
-	
+
 	public static boolean isOpposite(Direction one, Direction two) {
 		if (Direction.RIGHT.equals(one) && Direction.LEFT.equals(two)
 				|| Direction.RIGHT.equals(two) && Direction.LEFT.equals(one)) {
 			return true;
 		}
-		
+
 		if (Direction.UP.equals(one) && Direction.DOWN.equals(two)
 				|| Direction.UP.equals(two) && Direction.DOWN.equals(one)) {
 			return true;
 		}
 		return false;
 	}
+
+	public boolean isSnakeCollision() {
+		for (int i = 1; i < this.getChildren().size(); i++) {
+			Block current = (Block) snake.get(i);
+			if (head.getX() == current.getX() && head.getY() == current.getY()) {
+				System.exit(0);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isBorderCollision() {
+		if (head.getX() > 1000 - 10 || head.getX() < 0 || head.getY() > 500 || head.getY() < 0) {
+			System.out.println("Outside!" + head.getX() + head.getY());
+			return true;
+		}
+		return false;
+	}
+
 }
