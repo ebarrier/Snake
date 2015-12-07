@@ -12,11 +12,11 @@ all copies or substantial portions of the Software.
 
 package game;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.sun.javafx.scene.traversal.Direction;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -24,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import parts.Apple;
 import parts.Snake;
 
@@ -31,6 +32,15 @@ public class MainGame extends Application {
 
 	Snake snake = new Snake();
 	Apple apple = new Apple();
+	
+	public void stopGame() {
+		try {
+			stop();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.exit(0);
+	}
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -47,17 +57,23 @@ public class MainGame extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.setOnCloseRequest(event -> {
-			System.exit(0);
+			stopGame();
 		});
 		primaryStage.show();
-		
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				snake.move();		
+
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> {
+			snake.move();
+			if (snake.collides(apple)) {
+				System.out.println("applecollision");
+				snake.eat(apple);
+				
+				components.remove(apple);
+				apple = new Apple();
+				components.add(apple);
 			}
-		}, 100, 100);
+		}));
+		timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.play();
 		
 		primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			switch(event.getCode()) {
@@ -74,7 +90,7 @@ public class MainGame extends Application {
 				snake.setDirection(Direction.DOWN);
 				break;
 			case ESCAPE:
-				System.exit(0);
+				stopGame();
 			default:
 				break;
 			}
