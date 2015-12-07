@@ -18,9 +18,6 @@ import javafx.scene.shape.Rectangle;
 public class Block extends Rectangle {
 	
 	public static final int SIZE = 20;
-	
-	public Block() {
-	}
 
 	public Block(int x, int y) {
 		setX(x * SIZE);
@@ -30,6 +27,9 @@ public class Block extends Rectangle {
 		setArcWidth(0);
 		setArcHeight(0);
 		setFill(Color.BLACK);
+	}
+
+	public Block() {
 	}
 	
 	

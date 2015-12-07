@@ -13,39 +13,37 @@ all copies or substantial portions of the Software.
 package parts;
 
 import com.sun.javafx.scene.traversal.Direction;
+
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.paint.Paint;
 
 public class Snake extends Group {
 
 	private Direction direction = Direction.DOWN;
 	private Direction directionOrder;
 	private Block head;
-	private ObservableList<Node> snake;
+	private ObservableList<Node> body;
 
 	public Snake() {
 
-		// BodyPart snake = new BodyPart(1, 1);
-		// this.getChildren().add(snake);
-
-		for (int i = 0; i < 10; i++) {
-			Block snake = new Block(i + 3, 3);
-			this.getChildren().add(snake);
-		}
+		Block firstPart = new Block(1, 1);
+		this.getChildren().add(firstPart);
 
 		head = (Block) this.getChildren().get(0);
-		snake = this.getChildren();
+		head.setFill(Paint.valueOf("blue"));
+		body = this.getChildren();
 	}
 
 	private void moveBody() {
 
-		int size = snake.size();
+		int size = body.size();
 
 		if (size > 1) {
 			for (int i = size - 1; i > 0; i--) {
-				Block prev = (Block) snake.get(i - 1);
-				Block current = (Block) snake.get(i);
+				Block prev = (Block) body.get(i - 1);
+				Block current = (Block) body.get(i);
 				current.setX(prev.getX());
 				current.setY(prev.getY());
 			}
@@ -59,9 +57,6 @@ public class Snake extends Group {
 			directionOrder = null;
 		}
 
-		
-		isBorderCollision();
-		isSnakeCollision();
 		moveBody();
 		switch (direction) {
 		case DOWN:
@@ -78,6 +73,10 @@ public class Snake extends Group {
 			break;
 		default:
 			break;
+		}
+		
+		if (isBorderCollision() || isSnakeCollision()) {
+			System.out.println("GAME OVER!");
 		}
 	}
 
@@ -103,9 +102,8 @@ public class Snake extends Group {
 	
 	public boolean isSnakeCollision() {
 		for (int i = 1; i < this.getChildren().size(); i++) {
-			Block current = (Block) snake.get(i);
+			Block current = (Block) body.get(i);
 			if (head.getX() == current.getX() && head.getY() == current.getY()) {
-				System.exit(0);
 				return true;
 			}
 		}
@@ -114,10 +112,22 @@ public class Snake extends Group {
 
 	public boolean isBorderCollision() {
 		if (head.getX() > 1000 - 10 || head.getX() < 0 || head.getY() > 500 || head.getY() < 0) {
-			System.out.println("Outside!" + head.getX() + head.getY());
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean collides(Apple apple) {
+		
+		if (head.getX() == apple.getX() && head.getY() == apple.getY()) {
+			return true;
+		}
+		return false;
+	}
+
+	public void eat(Apple apple) {
+		Block block = new Block(-2, -2);
+		body.add(block);
 	}
 
 }
