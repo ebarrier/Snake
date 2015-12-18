@@ -78,16 +78,16 @@ public class MainGame extends Application {
 		primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			switch(event.getCode()) {
 			case LEFT:
-				snake.setDirection(Direction.LEFT);
+				snake.directionOrders(Direction.LEFT);
 				break;
 			case RIGHT:
-				snake.setDirection(Direction.RIGHT);
+				snake.directionOrders(Direction.RIGHT);
 				break;
 			case UP:
-				snake.setDirection(Direction.UP);
+				snake.directionOrders(Direction.UP);
 				break;
 			case DOWN:
-				snake.setDirection(Direction.DOWN);
+				snake.directionOrders(Direction.DOWN);
 				break;
 			case ESCAPE:
 				stopGame();

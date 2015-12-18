@@ -12,6 +12,8 @@ all copies or substantial portions of the Software.
 
 package parts;
 
+import java.util.ArrayList;
+
 import com.sun.javafx.scene.traversal.Direction;
 
 import javafx.collections.ObservableList;
@@ -23,6 +25,7 @@ public class Snake extends Group {
 
 	private Direction direction = Direction.DOWN;
 	private Direction directionOrder;
+	private ArrayList<Direction> directionOrders = new ArrayList<Direction>();
 	private Block head;
 	private ObservableList<Node> body;
 
@@ -50,15 +53,21 @@ public class Snake extends Group {
 		}
 	}
 
-	public void move() {
-
-		if (null != directionOrder) {
-			direction = directionOrder;
-			directionOrder = null;
+	private void moveHead() {
+		if (directionOrders.isEmpty()) {
+			directionOrder = this.direction;
+		} else {
+			for (int i = 0; i < directionOrders.size(); i++) {
+				if (!isOpposite(directionOrders.get(i), this.direction) && directionOrders.get(i) != this.direction) {
+					setDirectionOrder(directionOrders.get(i));
+					setDirection(directionOrders.get(directionOrders.size() - 1));
+					directionOrders.clear();
+					break;
+				}
+			}
 		}
 
-		moveBody();
-		switch (direction) {
+		switch (directionOrder) {
 		case DOWN:
 			head.setY(head.getY() + Block.SIZE);
 			break;
@@ -74,16 +83,24 @@ public class Snake extends Group {
 		default:
 			break;
 		}
-		
+	}
+
+	public void move() {
+
+		moveBody();
+		moveHead();
+
 		if (isBorderCollision() || isSnakeCollision()) {
 			System.out.println("GAME OVER!");
 		}
 	}
 
+	public void setDirectionOrder(Direction direction) {
+		this.directionOrder = direction;
+	}
+
 	public void setDirection(Direction direction) {
-		if (!isOpposite(this.direction, direction)) {
-			this.directionOrder = direction;
-		}
+		this.direction = direction;
 	}
 
 	public static boolean isOpposite(Direction one, Direction two) {
@@ -99,7 +116,10 @@ public class Snake extends Group {
 		return false;
 	}
 
-	
+	public void directionOrders(Direction direction) {
+		this.directionOrders.add(direction);
+	}
+
 	public boolean isSnakeCollision() {
 		for (int i = 1; i < this.getChildren().size(); i++) {
 			Block current = (Block) body.get(i);
@@ -116,9 +136,9 @@ public class Snake extends Group {
 		}
 		return false;
 	}
-	
+
 	public boolean collides(Apple apple) {
-		
+
 		if (head.getX() == apple.getX() && head.getY() == apple.getY()) {
 			return true;
 		}
