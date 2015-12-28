@@ -17,8 +17,10 @@ import javafx.scene.shape.Rectangle;
 
 public class Block extends Rectangle {
 	
+	//Final size defined for the block of the game
 	public static final int SIZE = 20;
 
+	//Creates a rectangle with coordinates x and y and side of size SIZE
 	public Block(int x, int y) {
 		setX(x * SIZE);
 		setY(y * SIZE);

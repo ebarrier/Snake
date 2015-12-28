@@ -33,6 +33,7 @@ public class MainGame extends Application {
 	Snake snake = new Snake();
 	Apple apple = new Apple();
 	
+	//Stops the games and closes the window
 	public void stopGame() {
 		try {
 			stop();
@@ -42,29 +43,31 @@ public class MainGame extends Application {
 		System.exit(0);
 	}
 	
+	//Launches the game
 	@Override
 	public void start(Stage primaryStage) {
 		
 		Pane layout = new Pane();
-		ObservableList<Node> components = layout.getChildren();
+		ObservableList<Node> components = layout.getChildren(); //creates a list of nodes and adds them to the layout
 		
-		components.add(snake);
-		components.add(apple);
+		components.add(snake); //snake added to the layout
+		components.add(apple); //apple added to the layout
 		
 		
-		Scene scene = new Scene(layout, 1000, 500);
-		primaryStage.setTitle("Snake");
+		Scene scene = new Scene(layout, 260, 260); //creates a scene with a size
+		primaryStage.setTitle("Snake"); //sets the title of the window
 		primaryStage.setScene(scene);
-		primaryStage.setResizable(false);
+		primaryStage.setResizable(false); //the window's size cannot be changed
 		primaryStage.setOnCloseRequest(event -> {
-			stopGame();
+			stopGame(); //closing the window stops the game
 		});
-		primaryStage.show();
+		primaryStage.show(); //displays the elements of the game
 
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> {
-			snake.move();
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> { //creates a timer
+			snake.move(); //at each frequence, the snake moves
+			
+			//when the snake eats an apple, it grows by one block, apple is deleted and another one is created
 			if (snake.collides(apple)) {
-				System.out.println("applecollision");
 				snake.eat(apple);
 				
 				components.remove(apple);
@@ -75,6 +78,7 @@ public class MainGame extends Application {
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 		
+		//arrow keys pressed by player are recorded in the list of direction orders
 		primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			switch(event.getCode()) {
 			case LEFT:
