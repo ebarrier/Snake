@@ -63,7 +63,7 @@ public class MainGame extends Application {
 		components.add(apple); //apple added to pane
 		components.add(tEat); //text added to pane
 		tEat.setText("Etienne" + score);
-		tEat.setFont(Font.font(STYLESHEET_MODENA, 15));
+		tEat.setFont(Font.font(STYLESHEET_MODENA, 20));
 		tEat.setY(height/2);
 		tEat.setX(width/2 - 40);
 		tEat.setFill(Color.GREEN);

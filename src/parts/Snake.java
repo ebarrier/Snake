@@ -33,7 +33,7 @@ public class Snake extends Group {
 	
 	public Snake() {
 
-		Block firstPart = new Block(1, 1); //creates the first block for the snake
+		Block firstPart = new Block(0, 0); //creates the first block for the snake
 		this.getChildren().add(firstPart); //add the block to the group "snake"
 
 		head = (Block) this.getChildren().get(0); //set the first block of the group as the "head"

@@ -35,7 +35,7 @@ public class Apple extends Block {
 		for (int i = 0; i < size - 1; i++) {
 			Block current = (Block) Snake.body.get(i);
 			if (current.getX() == this.getX() && current.getY() == this.getY()) {
-				System.out.println("is on snake");
+				//System.out.println("is on snake");
 				return true;
 			}
 		}
@@ -44,8 +44,8 @@ public class Apple extends Block {
 	
 	// Changes coordinates of Apple. Inspired by https://github.com/abcghy/Snake/blob/master/src/Apple.java
 	public void changeLocation() {
-		this.setX(getRandomX());
-		this.setY(getRandomY());
+		this.setX(getRandomX() * SIZE);
+		this.setY(getRandomY() * SIZE);
 		//BUG HERE
 		
 	}
