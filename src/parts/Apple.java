@@ -1,5 +1,6 @@
 package parts;
 
+import game.MainGame;
 import javafx.scene.paint.Color;
 
 public class Apple extends Block {
@@ -16,14 +17,14 @@ public class Apple extends Block {
 	
 	//Method to randomise the X coordinate
 	public static int getRandomX() {
-		int x = (int) (Math.random() * 260 / SIZE);
+		int x = (int) (Math.random() * MainGame.width / SIZE);
 		System.out.println(x);
 		return x;
 	}
 
 	//Method to randomise the Y coordinate
 	public static int getRandomY() {
-		int y = (int) (Math.random() * 260 / SIZE);
+		int y = (int) (Math.random() * MainGame.height / SIZE);
 		System.out.println(y);
 		return y;
 	}

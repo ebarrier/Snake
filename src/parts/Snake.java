@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import com.sun.javafx.scene.traversal.Direction;
 
+import game.MainGame;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -153,7 +154,7 @@ public class Snake extends Group {
 
 	//Checks whether the head of the snake meets the border of the screen
 	public boolean isBorderCollision() {
-		if (head.getX() > 260 - 10 || head.getX() < 0 || head.getY() > 260 || head.getY() < 0) {
+		if (head.getX() > MainGame.width - 10 || head.getX() < 0 || head.getY() > MainGame.height || head.getY() < 0) {
 			return true;
 		}
 		return false;

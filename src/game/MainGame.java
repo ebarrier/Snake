@@ -32,6 +32,8 @@ public class MainGame extends Application {
 
 	Snake snake = new Snake();
 	Apple apple = new Apple();
+	public static final int width = 200;
+	public static final int height = 200;
 	
 	//Stops the games and closes the window
 	public void stopGame() {
@@ -54,7 +56,7 @@ public class MainGame extends Application {
 		components.add(apple); //apple added to the layout
 		
 		
-		Scene scene = new Scene(layout, 260, 260); //creates a scene with a size
+		Scene scene = new Scene(layout, width, height); //creates a scene with a size
 		primaryStage.setTitle("Snake"); //sets the title of the window
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false); //the window's size cannot be changed
