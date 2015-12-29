@@ -26,6 +26,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -57,13 +58,13 @@ public class MainGame extends Application {
 	public void start(Stage primaryStage) {
 		
 		Pane layout = new Pane();
-		ObservableList<Node> components = layout.getChildren(); //creates a list of nodes and adds them to the layout
+		ObservableList<Node> components = layout.getChildren(); //creates a list of nodes and adds them to pane
 		
 		components.add(snake); //snake added to pane
 		components.add(apple); //apple added to pane
 		components.add(tEat); //text added to pane
-		tEat.setText("Etienne" + score);
-		tEat.setFont(Font.font(STYLESHEET_MODENA, 20));
+		tEat.setText("GG! " + score);
+		tEat.setFont(Font.font(STYLESHEET_MODENA, FontWeight.BOLD, 20));
 		tEat.setY(height/2);
 		tEat.setX(width/2 - 40);
 		tEat.setFill(Color.GREEN);
@@ -85,12 +86,15 @@ public class MainGame extends Application {
 			//when the snake eats an apple, it grows by one block, apple is deleted and another one is created.
 			if (snake.collides(apple)) {
 				score++;
-				System.out.println(score);
 				fader(tEat); //tEat text appears and fades away
 				snake.eat(apple);
 				components.remove(apple);
 				apple = new Apple();
 				components.add(apple);
+			}
+			
+			if (snake.isOnSnake(apple)) {
+				apple.changeLocation();
 			}
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
@@ -129,6 +133,7 @@ public class MainGame extends Application {
         fade.play();
         return fade;
     }
+	
 	
 	public static void main(String[] args) {
         launch(args);

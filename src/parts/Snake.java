@@ -28,26 +28,28 @@ public class Snake extends Group {
 	private Direction directionOrder;
 	private ArrayList<Direction> directionOrders = new ArrayList<Direction>();
 	public static Block head;
-	public static ObservableList<Node> body;
+	public ObservableList<Node> body;
 
-	
 	public Snake() {
 
-		Block firstPart = new Block(0, 0); //creates the first block for the snake
-		this.getChildren().add(firstPart); //add the block to the group "snake"
+		Block firstPart = new Block(0, 0); // creates the first block for the
+											// snake
+		this.getChildren().add(firstPart); // add the block to the group "snake"
 
-		head = (Block) this.getChildren().get(0); //set the first block of the group as the "head"
-		head.setFill(Paint.valueOf("blue")); //set the colour of the head as blue
-		body = this.getChildren(); //set all the snake group as "body"
+		head = (Block) this.getChildren().get(0); // set the first block of the
+													// group as the "head"
+		head.setFill(Paint.valueOf("blue")); // set the colour of the head as
+												// blue
+		body = this.getChildren(); // set all the snake group as "body"
 	}
 
-	//Moves the snake
+	// Moves the snake
 	private void moveBody() {
 
 		int size = body.size();
 		/**
-		 * Each block of the snake's body, starting from the last one, 
-		 * gets the position of his neighbour (the previous one).
+		 * Each block of the snake's body, starting from the last one, gets the
+		 * position of his neighbour (the previous one).
 		 */
 		if (size > 1) {
 			for (int i = size - 1; i > 0; i--) {
@@ -58,29 +60,29 @@ public class Snake extends Group {
 			}
 		}
 	}
-	
-	//Adds a direction to the list of direction orders
+
+	// Adds a direction to the list of direction orders
 	public void directionOrders(Direction direction) {
 		this.directionOrders.add(direction);
 	}
-	
-	//Set a direction as "directionOrder"
+
+	// Set a direction as "directionOrder"
 	public void setDirectionOrder(Direction direction) {
 		this.directionOrder = direction;
 	}
-	
-	//Set a direction as "direction"
+
+	// Set a direction as "direction"
 	public void setDirection(Direction direction) {
 		this.direction = direction;
 	}
-	
-	//Checks two directions if they are opposite
+
+	// Checks two directions if they are opposite
 	public static boolean isOpposite(Direction one, Direction two) {
 		if (Direction.RIGHT.equals(one) && Direction.LEFT.equals(two)
 				|| Direction.RIGHT.equals(two) && Direction.LEFT.equals(one)) {
 			return true;
 		}
-		
+
 		if (Direction.UP.equals(one) && Direction.DOWN.equals(two)
 				|| Direction.UP.equals(two) && Direction.DOWN.equals(one)) {
 			return true;
@@ -88,22 +90,25 @@ public class Snake extends Group {
 		return false;
 	}
 
-	//Move the head of the snake according to arrow key pressed by player
+	// Move the head of the snake according to arrow key pressed by player
 	private void moveHead() {
-		//When the list of direction orders is empty, the current direction is used as the direction order
+		// When the list of direction orders is empty, the current direction is
+		// used as the direction order
 		if (directionOrders.isEmpty()) {
 			directionOrder = this.direction;
 		} else {
-			//Each direction of the list of direction orders is iterated
+			// Each direction of the list of direction orders is iterated
 			for (int i = 0; i < directionOrders.size(); i++) {
 				/**
-				 * When the direction order in the list is not opposite to the current direction,
-				 * AND it is different than the current direction,...
+				 * When the direction order in the list is not opposite to the
+				 * current direction, AND it is different than the current
+				 * direction,...
 				 */
 				if (!isOpposite(directionOrders.get(i), this.direction) && directionOrders.get(i) != this.direction) {
 					/**
-					 * ... the head moves one time to this direction order and the "direction" of the snake is set with
-					 * the value of the last direction order of the list or orders.
+					 * ... the head moves one time to this direction order and
+					 * the "direction" of the snake is set with the value of the
+					 * last direction order of the list or orders.
 					 */
 					setDirectionOrder(directionOrders.get(i));
 					setDirection(directionOrders.get(directionOrders.size() - 1));
@@ -113,7 +118,8 @@ public class Snake extends Group {
 			}
 		}
 
-		//For each direction order, the head moves towards it for one block size
+		// For each direction order, the head moves towards it for one block
+		// size
 		switch (directionOrder) {
 		case DOWN:
 			head.setY(head.getY() + Block.SIZE);
@@ -132,16 +138,17 @@ public class Snake extends Group {
 		}
 	}
 
-	//How the whole snake moves (body first and then head otherwise there is a bug)
+	// How the whole snake moves (body first and then head otherwise there is a
+	// bug)
 	public void move() {
 		moveBody();
 		moveHead();
 		if (isBorderCollision() || isSnakeCollision()) {
-			//System.out.println("GAME OVER!");
+			// System.out.println("GAME OVER!");
 		}
 	}
 
-	//Checks whether the head of the snake meets its body
+	// Checks whether the head of the snake meets its body
 	public boolean isSnakeCollision() {
 		for (int i = 1; i < this.getChildren().size(); i++) {
 			Block current = (Block) body.get(i);
@@ -152,7 +159,7 @@ public class Snake extends Group {
 		return false;
 	}
 
-	//Checks whether the head of the snake meets the border of the screen
+	// Checks whether the head of the snake meets the border of the screen
 	public boolean isBorderCollision() {
 		if (head.getX() > MainGame.width - 10 || head.getX() < 0 || head.getY() > MainGame.height || head.getY() < 0) {
 			return true;
@@ -160,7 +167,7 @@ public class Snake extends Group {
 		return false;
 	}
 
-	//Checks whether the head of the snake meets an apple
+	// Checks whether the head of the snake meets an apple
 	public boolean collides(Apple apple) {
 		if (head.getX() == apple.getX() && head.getY() == apple.getY()) {
 			return true;
@@ -168,12 +175,23 @@ public class Snake extends Group {
 		return false;
 	}
 
-	//When an apple is met, a block is created an added to the snake's body
+	// When an apple is met, a block is created an added to the snake's body
 	public void eat(Apple apple) {
 		Block block = new Block(-2, -2);
 		body.add(block);
 	}
 
-	
+	// Check whether the block appears on Snake. Inspired by https://github.com/abcghy/Snake/blob/master/src/Apple.java
+	public boolean isOnSnake(Block block) {
+		int size = body.size();
+		for (int i = 0; i < size - 1; i++) {
+			Block current = (Block) body.get(i);
+			if (current.getX() == block.getX() && current.getY() == block.getY()) {
+				System.out.println("is on snake");
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
