@@ -8,7 +8,6 @@ public class Apple extends Block {
 	//Creates an Apple block at random location
 	public Apple() {
 		super(getRandomX(), getRandomY());
-		System.out.println("Apple constructor");
 		while (isOnSnake()) {
 			changeLocation();
 		}
@@ -18,14 +17,12 @@ public class Apple extends Block {
 	//Method to randomise the X coordinate
 	public static int getRandomX() {
 		int x = (int) (Math.random() * MainGame.width / SIZE);
-		System.out.println(x);
 		return x;
 	}
 
 	//Method to randomise the Y coordinate
 	public static int getRandomY() {
 		int y = (int) (Math.random() * MainGame.height / SIZE);
-		System.out.println(y);
 		return y;
 	}
 
@@ -47,7 +44,6 @@ public class Apple extends Block {
 	
 	// Changes coordinates of Apple. Inspired by https://github.com/abcghy/Snake/blob/master/src/Apple.java
 	public void changeLocation() {
-		System.out.println("Location method called");
 		this.setX(getRandomX());
 		this.setY(getRandomY());
 		//BUG HERE
