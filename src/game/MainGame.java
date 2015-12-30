@@ -19,6 +19,9 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -63,11 +66,10 @@ public class MainGame extends Application {
 		components.add(snake); //snake added to pane
 		components.add(apple); //apple added to pane
 		components.add(tEat); //text added to pane
-		tEat.setText("GG! " + score);
 		tEat.setFont(Font.font(STYLESHEET_MODENA, FontWeight.BOLD, 20));
 		tEat.setY(height/2);
 		tEat.setX(width/2 - 40);
-		tEat.setFill(Color.GREEN);
+		tEat.setFill(Color.CHARTREUSE);
 		tEat.setOpacity(0);
 		
 		
@@ -86,6 +88,8 @@ public class MainGame extends Application {
 			//when the snake eats an apple, it grows by one block, apple is deleted and another one is created.
 			if (snake.collides(apple)) {
 				score++;
+				primaryStage.setTitle("Snake " + score);
+				tEat.setText("Etienne");
 				fader(tEat); //tEat text appears and fades away
 				snake.eat(apple);
 				components.remove(apple);
