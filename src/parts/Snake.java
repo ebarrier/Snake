@@ -118,7 +118,7 @@ public class Snake extends Group {
 			}
 		}
 
-		// For each direction order, the head moves towards it for one block
+		// For each direction order, head moves towards it for one block
 		// size
 		switch (directionOrder) {
 		case DOWN:
@@ -146,7 +146,7 @@ public class Snake extends Group {
 		if (isBorderCollision() || isSnakeCollision()) {
 			// System.out.println("GAME OVER!");
 		}
-		
+
 	}
 
 	// Checks whether the head of the snake meets its body
@@ -182,7 +182,8 @@ public class Snake extends Group {
 		body.add(block);
 	}
 
-	// Checks whether the block appears on Snake. Inspired by https://github.com/abcghy/Snake/blob/master/src/Apple.java
+	// Checks whether the block appears on Snake. Inspired by
+	// https://github.com/abcghy/Snake/blob/master/src/Apple.java
 	public boolean isOnSnake(Block block) {
 		int size = body.size();
 		for (int i = 0; i < size - 1; i++) {
@@ -193,8 +194,8 @@ public class Snake extends Group {
 		}
 		return false;
 	}
-	
-	//Checks whether the snake fills the scene
+
+	// Checks whether the snake fills the scene
 	public boolean snakeComplete() {
 		if ((MainGame.width / Block.SIZE) * (MainGame.height / Block.SIZE) == this.body.size()) {
 			return true;
