@@ -19,9 +19,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -40,8 +37,8 @@ public class MainGame extends Application {
 
 	Snake snake = new Snake();
 	Apple apple = new Apple();
-	public static final int width = 200;
-	public static final int height = 200;
+	public static final int width = 120;
+	public static final int height = 40;
 	public static int score;
 	private Text tEat = new Text();
 	
@@ -63,9 +60,10 @@ public class MainGame extends Application {
 		Pane layout = new Pane();
 		ObservableList<Node> components = layout.getChildren(); //creates a list of nodes and adds them to pane
 		
-		components.add(snake); //snake added to pane
-		components.add(apple); //apple added to pane
-		components.add(tEat); //text added to pane
+		//snake, apple and tEat added to pane
+		components.addAll(snake, apple, tEat);
+		
+		//set tEat parameters
 		tEat.setFont(Font.font(STYLESHEET_MODENA, FontWeight.BOLD, 20));
 		tEat.setY(height/2);
 		tEat.setX(width/2 - 40);
@@ -74,6 +72,8 @@ public class MainGame extends Application {
 		
 		
 		Scene scene = new Scene(layout, width, height); //creates a scene with a size
+		primaryStage.setWidth(400);
+		primaryStage.setHeight(400);
 		primaryStage.setTitle("Snake"); //sets the title of the window
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false); //the window's size cannot be changed
@@ -82,7 +82,7 @@ public class MainGame extends Application {
 		});
 		primaryStage.show(); //displays the elements of the game
 
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> { //creates a timer
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), ev -> { //creates a timer
 			snake.move(); //at each frequency, the snake moves
 			
 			//when the snake eats an apple, it grows by one block, apple is deleted and another one is created.
@@ -97,9 +97,16 @@ public class MainGame extends Application {
 				components.add(apple);
 			}
 			
+			//when the apple appears on snake, it is relocated
 			if (snake.isOnSnake(apple)) {
 				apple.changeLocation();
 			}
+			
+			//when the snake fills the scene entirely, game ends
+			if (snake.snakeComplete()) {
+				stopGame();
+			}
+			
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();

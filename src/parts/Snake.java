@@ -146,6 +146,7 @@ public class Snake extends Group {
 		if (isBorderCollision() || isSnakeCollision()) {
 			// System.out.println("GAME OVER!");
 		}
+		
 	}
 
 	// Checks whether the head of the snake meets its body
@@ -181,15 +182,22 @@ public class Snake extends Group {
 		body.add(block);
 	}
 
-	// Check whether the block appears on Snake. Inspired by https://github.com/abcghy/Snake/blob/master/src/Apple.java
+	// Checks whether the block appears on Snake. Inspired by https://github.com/abcghy/Snake/blob/master/src/Apple.java
 	public boolean isOnSnake(Block block) {
 		int size = body.size();
 		for (int i = 0; i < size - 1; i++) {
 			Block current = (Block) body.get(i);
 			if (current.getX() == block.getX() && current.getY() == block.getY()) {
-				System.out.println("is on snake");
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	//Checks whether the snake fills the scene
+	public boolean snakeComplete() {
+		if ((MainGame.width / Block.SIZE) * (MainGame.height / Block.SIZE) == this.body.size()) {
+			return true;
 		}
 		return false;
 	}
