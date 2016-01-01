@@ -19,13 +19,15 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -44,11 +46,12 @@ public class MainGame extends Application {
 	private static int score;
 	private Text tEat = new Text();
 	private Stage window;
-	private Button btnStart, btnTryAgain, btnQuit;
-	private Label lblscene1, lblscene3, lblscene4;
-	private StackPane stack1, stack3, stack4;
-	Pane gamePane;
-	private Scene scene1, scene2, scene3, scene4;
+	private Button btnStart, btnTryAgain, btnTryAgain2, btnQuit, btnQuit2;
+	private Label title, lbl1scene1, lbl2scene1, lblscene3, lblscene4;
+	private HBox hbox3, hbox4;
+	private VBox vbox1, vbox3, vbox4;
+	private Pane gamePane;
+	private Scene scene1, scene2, loseScene3, winScene4;
 	private Timeline timeline;
 	private boolean isPaused;
 
@@ -59,7 +62,9 @@ public class MainGame extends Application {
 		// Buttons set up
 		btnStart = new Button("Start the game now!");
 		btnTryAgain = new Button("Try again");
+		btnTryAgain2 = new Button("Try again2");
 		btnQuit = new Button("Quit");
+		btnQuit2 = new Button("Quit2");
 		btnStart.setOnAction(e -> {
 			runGame();
 		});
@@ -68,10 +73,18 @@ public class MainGame extends Application {
 			resetGame();
 			runGame();
 		});
+		btnTryAgain2.setOnAction(e -> {
+			timeline.stop();
+			resetGame();
+			runGame();
+		});
 		btnQuit.setOnAction(e -> exitGame());
+		btnQuit2.setOnAction(e -> exitGame());
 
 		// Labels set up
-		lblscene1 = new Label("Welcome to the Snake Game by Etienne Barrier!\n Click to start the game");
+		title = new Label("SNAKE");
+		lbl1scene1 = new Label("Welcome to the Snake Game by Etienne Barrier!");
+		lbl2scene1 = new Label("Click to start the game");
 		lblscene3 = new Label("Epic fail! Try again if you dare...");
 		lblscene4 = new Label("You win! Congrats!");
 
@@ -83,22 +96,31 @@ public class MainGame extends Application {
 		tEat.setOpacity(0);
 
 		// Layouts set up
-		stack1 = new StackPane();
-		gamePane = new Pane();
-		stack3 = new StackPane();
-		stack4 = new StackPane();
-
-		// Add items to layouts
-		stack1.getChildren().addAll(btnStart);
-		gamePane.getChildren().addAll(snake, apple, tEat);
-		stack3.getChildren().addAll(btnTryAgain, btnQuit, lblscene3);
-		stack4.getChildren().addAll(btnTryAgain, lblscene4);
+		gamePane = new Pane(snake, apple, tEat);
+		
+		vbox1 = new VBox(title, lbl1scene1, lbl2scene1, btnStart);
+		vbox1.setAlignment(Pos.CENTER);
+		vbox1.setSpacing(10);
+		
+		hbox3 = new HBox(btnTryAgain, btnQuit);
+		hbox3.setAlignment(Pos.CENTER);
+		hbox3.setSpacing(10);
+		vbox3 = new VBox(title, lblscene3, hbox3);
+		vbox3.setAlignment(Pos.CENTER);
+		vbox3.setSpacing(10);
+		
+		hbox4 = new HBox(btnTryAgain2, btnQuit2);
+		hbox4.setAlignment(Pos.CENTER);
+		hbox4.setSpacing(10);
+		vbox4 = new VBox(title, lblscene4, hbox4);
+		vbox4.setAlignment(Pos.CENTER);
+		vbox4.setSpacing(10);
 
 		// Scenes set up
-		scene1 = new Scene(stack1, width, height);
+		scene1 = new Scene(vbox1, width, height);
 		scene2 = new Scene(gamePane, width, height);
-		scene3 = new Scene(stack3, width, height);
-		scene4 = new Scene(stack4, width, height);
+		loseScene3 = new Scene(vbox3, width, height);
+		winScene4 = new Scene(vbox4, width, height);
 
 		// Stage set up
 		window = primaryStage;
@@ -108,8 +130,8 @@ public class MainGame extends Application {
 		window.setScene(scene1);
 		window.setResizable(false); // the window's size cannot be changed
 		window.setOnCloseRequest(event -> exitGame()); // closing the
-																// window stops
-																// the game
+														// window stops
+														// the game
 		window.show(); // displays the elements of the game
 
 		// arrow keys pressed are recorded in the list of direction orders
@@ -137,28 +159,22 @@ public class MainGame extends Application {
 		});
 
 	}
-	
-	public void resetGame(){
+
+	public void resetGame() {
 		score = 0;
 		window.setTitle("Snake " + score);
 		gamePane.getChildren().removeAll(snake, apple, tEat);
 		apple = new Apple();
 		snake = new Snake();
 		gamePane.getChildren().addAll(snake, apple, tEat);
-//		scene2 = new Scene(gamePane, width, height);
 	}
 
 	public void runGame() {
-//		Pane gamePane = new Pane();
-//		gamePane.getChildren().removeAll(snake, apple);
-//		apple = new Apple();
-//		snake = new Snake();
-//		gamePane.getChildren().addAll(snake, apple, tEat);
-//		Scene scene2 = new Scene(gamePane, width, height);
+
 		window.setScene(scene2);
-		
-		//create a timer
-		timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> { 
+
+		// create a timer
+		timeline = new Timeline(new KeyFrame(Duration.millis(100), ev -> {
 			snake.move(); // at each frequency, the snake moves
 
 			// when the snake eats an apple, it grows by one block, apple is
@@ -179,25 +195,28 @@ public class MainGame extends Application {
 				apple.changeLocation();
 			}
 
-			// when the snake fills the scene entirely, game ends
+			// when the snake fills the scene entirely
 			if (snake.snakeComplete()) {
 				win();
 			}
 
 			// when snake eats itself or border
-			// if (snake.collision()) {
-			// gameOver();
-			// }
+			if (snake.collision()) {
+				gameOver();
+			}
 
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.playFromStart();
 	}
 
-	// Fades a node until it becomes transparent. Inspired by
-	// https://docs.oracle.com/javase/8/javafx/api/javafx/animation/FadeTransition.html
-	// and
-	// http://stackoverflow.com/questions/23190049/how-to-make-a-text-content-disappear-after-some-time-in-javafx
+	/**
+	 * Fades a node until it becomes transparent. Inspired by
+	 * https://docs.oracle.com/javase/8/javafx/api/javafx/animation/
+	 * FadeTransition.html and
+	 * http://stackoverflow.com/questions/23190049/how-to-make-a-text-content-
+	 * disappear-after-some-time-in-javafx
+	 */
 	private FadeTransition fader(Node node) {
 		FadeTransition fade = new FadeTransition(Duration.millis(500), node);
 		fade.setFromValue(1);
@@ -206,16 +225,19 @@ public class MainGame extends Application {
 		return fade;
 	}
 
+	// Stops game and display losing scene
 	public void gameOver() {
 		timeline.stop();
-		window.setScene(scene3);
+		window.setScene(loseScene3);
 	}
 
+	// Stops game and display winning scene
 	public void win() {
 		timeline.stop();
-		window.setScene(scene4);
+		window.setScene(winScene4);
 	}
 
+	// Pauses/resumes game
 	public void pause() {
 		if (isPaused) {
 			timeline.play();
@@ -229,7 +251,7 @@ public class MainGame extends Application {
 	// Stops the games and closes the window
 	public void exitGame() {
 		try {
-			timeline.stop();
+			stop();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
