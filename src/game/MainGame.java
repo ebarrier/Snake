@@ -46,10 +46,7 @@ public class MainGame extends Application {
 	private static int score;
 	private Text tEat = new Text();
 	private Stage window;
-	private Button btnStart, btnTryAgain, btnTryAgain2, btnQuit, btnQuit2;
-	private Label title, lbl1scene1, lbl2scene1, lblscene3, lblscene4;
-	private HBox hbox3, hbox4;
-	private VBox vbox1, vbox3, vbox4;
+	private Label title;
 	private Pane gamePane;
 	private Scene scene1, scene2, loseScene3, winScene4;
 	private Timeline timeline;
@@ -58,70 +55,14 @@ public class MainGame extends Application {
 	// Launches the game
 	@Override
 	public void start(Stage primaryStage) {
-
-		// Buttons set up
-		btnStart = new Button("Start the game now!");
-		btnTryAgain = new Button("Try again");
-		btnTryAgain2 = new Button("Try again2");
-		btnQuit = new Button("Quit");
-		btnQuit2 = new Button("Quit2");
-		btnStart.setOnAction(e -> {
-			runGame();
-		});
-		btnTryAgain.setOnAction(e -> {
-			timeline.stop();
-			resetGame();
-			runGame();
-		});
-		btnTryAgain2.setOnAction(e -> {
-			timeline.stop();
-			resetGame();
-			runGame();
-		});
-		btnQuit.setOnAction(e -> exitGame());
-		btnQuit2.setOnAction(e -> exitGame());
-
-		// Labels set up
+		
 		title = new Label("SNAKE");
-		lbl1scene1 = new Label("Welcome to the Snake Game by Etienne Barrier!");
-		lbl2scene1 = new Label("Click to start the game");
-		lblscene3 = new Label("Epic fail! Try again if you dare...");
-		lblscene4 = new Label("You win! Congrats!");
-
-		// text tEat set up
-		tEat.setFont(Font.font(STYLESHEET_MODENA, FontWeight.BOLD, 20));
-		tEat.setY(height / 2);
-		tEat.setX(width / 2 - 40);
-		tEat.setFill(Color.CHARTREUSE);
-		tEat.setOpacity(0);
-
-		// Layouts set up
-		gamePane = new Pane(snake, apple, tEat);
 		
-		vbox1 = new VBox(title, lbl1scene1, lbl2scene1, btnStart);
-		vbox1.setAlignment(Pos.CENTER);
-		vbox1.setSpacing(10);
+		scene1();
+		scene2();
+		loseScene3();
+		winScene4();
 		
-		hbox3 = new HBox(btnTryAgain, btnQuit);
-		hbox3.setAlignment(Pos.CENTER);
-		hbox3.setSpacing(10);
-		vbox3 = new VBox(title, lblscene3, hbox3);
-		vbox3.setAlignment(Pos.CENTER);
-		vbox3.setSpacing(10);
-		
-		hbox4 = new HBox(btnTryAgain2, btnQuit2);
-		hbox4.setAlignment(Pos.CENTER);
-		hbox4.setSpacing(10);
-		vbox4 = new VBox(title, lblscene4, hbox4);
-		vbox4.setAlignment(Pos.CENTER);
-		vbox4.setSpacing(10);
-
-		// Scenes set up
-		scene1 = new Scene(vbox1, width, height);
-		scene2 = new Scene(gamePane, width, height);
-		loseScene3 = new Scene(vbox3, width, height);
-		winScene4 = new Scene(vbox4, width, height);
-
 		// Stage set up
 		window = primaryStage;
 		window.setWidth(1000);
@@ -130,10 +71,83 @@ public class MainGame extends Application {
 		window.setScene(scene1);
 		window.setResizable(false); // the window's size cannot be changed
 		window.setOnCloseRequest(event -> exitGame()); // closing the
-														// window stops
-														// the game
+													   // window stops
+													   // the game
 		window.show(); // displays the elements of the game
-
+		
+		keyListener();
+		
+	}
+	
+	public Scene scene1() {
+		Label lbl1scene1 = new Label("Welcome to the Snake Game by Etienne Barrier!");
+		Label lbl2scene1 = new Label("Click to start the game");
+		Button btnStart = new Button("Start the game now!");
+		btnStart.setOnAction(e -> {
+			runGame();
+		});
+		VBox vbox1 = new VBox(title, lbl1scene1, lbl2scene1, btnStart);
+		vbox1.setAlignment(Pos.CENTER);
+		vbox1.setSpacing(10);
+		scene1 = new Scene(vbox1, width, height);
+		return scene1;
+	}
+	
+	public Scene scene2() {
+		// text tEat set up
+		tEat.setFont(Font.font(STYLESHEET_MODENA, FontWeight.BOLD, 20));
+		tEat.setY(height / 2);
+		tEat.setX(width / 2 - 40);
+		tEat.setFill(Color.CHARTREUSE);
+		tEat.setOpacity(0);
+		
+		gamePane = new Pane(snake, apple, tEat);
+		scene2 = new Scene(gamePane, width, height);
+		return scene2;
+	}
+	
+	public Scene loseScene3() {
+		Label lblscene3 = new Label("Epic fail! Try again if you dare...");
+		Button btnTryAgain = new Button("Try again");
+		btnTryAgain.setOnAction(e -> {
+			timeline.stop();
+			resetGame();
+			runGame();
+		});
+		Button btnQuit = new Button("Quit");
+		btnQuit.setOnAction(e -> exitGame());
+		HBox hbox3 = new HBox(btnTryAgain, btnQuit);
+		hbox3.setAlignment(Pos.CENTER);
+		hbox3.setSpacing(10);
+		VBox vbox3 = new VBox(title, lblscene3, hbox3);
+		vbox3.setAlignment(Pos.CENTER);
+		vbox3.setSpacing(10);
+		loseScene3 = new Scene(vbox3, width, height);
+		return loseScene3;
+	}
+	
+	public Scene winScene4() {
+		Label lblscene4 = new Label("You win! Congrats!");
+		Button btnTryAgain2 = new Button("Try again2");
+		btnTryAgain2.setOnAction(e -> {
+			timeline.stop();
+			resetGame();
+			runGame();
+		});
+		Button btnQuit2 = new Button("Quit2");
+		btnQuit2.setOnAction(e -> exitGame());
+		HBox hbox4 = new HBox(btnTryAgain2, btnQuit2);
+		hbox4.setAlignment(Pos.CENTER);
+		hbox4.setSpacing(10);
+		VBox vbox4 = new VBox(title, lblscene4, hbox4);
+		vbox4.setAlignment(Pos.CENTER);
+		vbox4.setSpacing(10);
+		winScene4 = new Scene(vbox4, width, height);
+		return winScene4;	
+	}
+	
+	
+	public void keyListener() {
 		// arrow keys pressed are recorded in the list of direction orders
 		window.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			switch (event.getCode()) {
@@ -157,7 +171,7 @@ public class MainGame extends Application {
 				break;
 			}
 		});
-
+		
 	}
 
 	public void resetGame() {
