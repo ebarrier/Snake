@@ -31,7 +31,7 @@ public class Snake extends Group {
 	public ObservableList<Node> body;
 
 	public Snake() {
-
+ 
 		Block firstPart = new Block(0, 0); // creates the first block for the
 											// snake
 		this.getChildren().add(firstPart); // add the block to the group "snake"
@@ -143,10 +143,14 @@ public class Snake extends Group {
 	public void move() {
 		moveBody();
 		moveHead();
+		collision();
+	}
+	
+	public boolean collision() {
 		if (isBorderCollision() || isSnakeCollision()) {
-			// System.out.println("GAME OVER!");
+			return true;
 		}
-
+		return false;
 	}
 
 	// Checks whether the head of the snake meets its body
