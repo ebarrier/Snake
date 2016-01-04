@@ -83,6 +83,7 @@ public class MainGame extends Application {
 
 	}
 	
+	//Design of the title
 	public Node title() {
         InnerShadow is = new InnerShadow();
         is.setOffsetX(4.0f);
@@ -95,6 +96,7 @@ public class MainGame extends Application {
         return title;
     }
 	
+	// Design of message when lose
 	public Node losemsg() {
 		Text lose = new Text("GAME OVER!");
 		lose.setFont(Font.font(null, FontWeight.BOLD, 80));
@@ -121,6 +123,7 @@ public class MainGame extends Application {
 		return lose;
 	}
 	
+	// Design of message when win
 	public Node winmsg() {
 		Text win = new Text("YOU WIN!");
 		win.setFont(Font.font(null, FontWeight.BOLD, 80));
@@ -147,32 +150,38 @@ public class MainGame extends Application {
 		return win;
 	}
 
+	//Set up of the scene1
 	public Scene scene1() {
 		Label lbl1scene1 = new Label("Welcome to the Snake Game by Etienne Barrier!");
 		lbl1scene1.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
 		lbl1scene1.setTextFill(Color.STEELBLUE);
 		lbl1scene1.setWrapText(true);
 		lbl1scene1.setStyle("-fx-text-alignment: CENTER"); //CSS styling
+		
 		Label lbl2scene1 = new Label("Click to start the game");
 		lbl2scene1.setFont(Font.font("Calibri", FontWeight.BOLD, 25));
 		lbl2scene1.setTextFill(Color.DEEPPINK);
+		
 		Image imgStart = new Image("http://www.iyicreative.com/images/Start.png");
 		ImageView v1 = new ImageView(imgStart);
 		v1.setFitWidth(100);
 		v1.setPreserveRatio(true);
+		
 		Button btnStart = new Button("", v1);
 		btnStart.setOnAction(e -> {
 			runGame();
 		});
+		
 		VBox vbox1 = new VBox(losemsg(), lbl1scene1, lbl2scene1, btnStart);
 		vbox1.setAlignment(Pos.CENTER);
 		vbox1.setSpacing(10);
+		
 		scene1 = new Scene(vbox1, width, height);
 		return scene1;
 	}
 
+	//Set up of the scene2 (game itself)
 	public Scene scene2() {
-		// text tEat set up
 		tEat.setFont(Font.font(STYLESHEET_MODENA, FontWeight.BOLD, 40));
 		tEat.setY(height / 2);
 		tEat.setX(width / 2 - 40);
@@ -184,6 +193,7 @@ public class MainGame extends Application {
 		return scene2;
 	}
 
+	//Set up of the scene3 (when lose)
 	public Scene loseScene() {
 		Label lb2scene3 = new Label("Epic fail! Try again if you dare...");
 		lb2scene3.setFont(Font.font("Calibri", FontWeight.BOLD, 25));
@@ -207,6 +217,7 @@ public class MainGame extends Application {
 		return loseScene;
 	}
 
+	//Set up of the scene3 (when win)
 	public Scene winScene() {
 		Label lblscene4 = new Label("Congratulations!");
 		lblscene4.setFont(Font.font("Calibri", FontWeight.BOLD, 40));
@@ -231,8 +242,8 @@ public class MainGame extends Application {
 		return winScene;
 	}
 
+	// arrow keys pressed are recorded in the list of direction orders
 	public void keyListener() {
-		// arrow keys pressed are recorded in the list of direction orders
 		window.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			switch (event.getCode()) {
 			case LEFT:
@@ -258,6 +269,7 @@ public class MainGame extends Application {
 
 	}
 
+	//Reset game
 	public void resetGame() {
 		score = 0;
 		window.setTitle("Snake " + score);
@@ -267,6 +279,7 @@ public class MainGame extends Application {
 		gamePane.getChildren().addAll(snake, apple, tEat);
 	}
 
+	//Run game
 	public void runGame() {
 
 		window.setScene(scene2);
@@ -308,6 +321,7 @@ public class MainGame extends Application {
 		timeline.playFromStart();
 	}
 
+	
 	/**
 	 * Fades a node until it becomes transparent. Inspired by
 	 * https://docs.oracle.com/javase/8/javafx/api/javafx/animation/
