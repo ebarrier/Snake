@@ -24,6 +24,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -50,7 +53,7 @@ public class MainGame extends Application {
 	private Text tEat = new Text();
 	private Stage window;
 	private Pane gamePane;
-	private Scene scene1, scene2, loseScene3, winScene4;
+	private Scene scene1, scene2, loseScene, winScene;
 	private Timeline timeline;
 	private boolean isPaused;
 	private int speed = 100;
@@ -61,15 +64,15 @@ public class MainGame extends Application {
 		
 		scene1();
 		scene2();
-		loseScene3();
-		winScene4();
+		loseScene();
+		winScene();
 
 		// Stage set up
 		window = primaryStage;
 //		window.setWidth(1000);
 //		window.setHeight(1000);
 		window.setTitle("Snake"); // sets the title of the window
-		window.setScene(scene1);
+		window.setScene(winScene);
 		window.setResizable(false); // the window's size cannot be changed
 		window.setOnCloseRequest(event -> exitGame()); // closing the
 														// window stops
@@ -87,13 +90,62 @@ public class MainGame extends Application {
         
         Text title = new Text("SNAKE");
         title.setEffect(is);
-        title.setX(height / 2);
-        title.setY(width / 2 - 40);
-        title.setText("SNAKE");
         title.setFill(Color.GREENYELLOW);
         title.setFont(Font.font(null, FontWeight.BOLD, 100));
         return title;
     }
+	
+	public Node losemsg() {
+		Text lose = new Text("GAME OVER!");
+		lose.setFont(Font.font(null, FontWeight.BOLD, 80));
+		lose.setFill(Color.ORANGE);
+		
+		Blend blend = new Blend();
+		blend.setMode(BlendMode.MULTIPLY);
+
+		DropShadow ds = new DropShadow();
+		ds.setColor(Color.RED);
+		ds.setOffsetX(5);
+		ds.setOffsetY(5);
+		ds.setRadius(5);
+		ds.setSpread(0.2);
+		blend.setTopInput(ds);
+
+		InnerShadow is = new InnerShadow();
+		is.setColor(Color.ORANGE);
+		is.setRadius(9);
+		is.setChoke(0.8);
+		blend.setBottomInput(is);
+
+		lose.setEffect(blend);
+		return lose;
+	}
+	
+	public Node winmsg() {
+		Text win = new Text("YOU WIN!");
+		win.setFont(Font.font(null, FontWeight.BOLD, 80));
+		win.setFill(Color.DEEPSKYBLUE);
+		
+		Blend blend = new Blend();
+		blend.setMode(BlendMode.MULTIPLY);
+
+		DropShadow ds = new DropShadow();
+		ds.setColor(Color.GOLD);
+		ds.setOffsetX(0);
+		ds.setOffsetY(0);
+		ds.setRadius(10);
+		ds.setSpread(0.5);
+		blend.setTopInput(ds);
+
+		InnerShadow is = new InnerShadow();
+		is.setColor(Color.ORANGE);
+		is.setRadius(9);
+		is.setChoke(0.5);
+		blend.setBottomInput(is);
+
+		win.setEffect(blend);
+		return win;
+	}
 
 	public Scene scene1() {
 		Label lbl1scene1 = new Label("Welcome to the Snake Game by Etienne Barrier!");
@@ -112,7 +164,7 @@ public class MainGame extends Application {
 		btnStart.setOnAction(e -> {
 			runGame();
 		});
-		VBox vbox1 = new VBox(title(), lbl1scene1, lbl2scene1, btnStart);
+		VBox vbox1 = new VBox(losemsg(), lbl1scene1, lbl2scene1, btnStart);
 		vbox1.setAlignment(Pos.CENTER);
 		vbox1.setSpacing(10);
 		scene1 = new Scene(vbox1, width, height);
@@ -132,9 +184,9 @@ public class MainGame extends Application {
 		return scene2;
 	}
 
-	public Scene loseScene3() {
-		Label lblscene3 = new Label("Epic fail! Try again if you dare...");
-		lblscene3.setFont(Font.font("Calibri", FontWeight.BOLD, 25));
+	public Scene loseScene() {
+		Label lb2scene3 = new Label("Epic fail! Try again if you dare...");
+		lb2scene3.setFont(Font.font("Calibri", FontWeight.BOLD, 25));
 		Button btnTryAgain = new Button("Try again");
 		btnTryAgain.setFont(Font.font("Calibri", FontWeight.BOLD, 25));
 		btnTryAgain.setOnAction(e -> {
@@ -145,18 +197,18 @@ public class MainGame extends Application {
 		Button btnQuit = new Button("Quit");
 		btnQuit.setFont(Font.font("Calibri", FontWeight.BOLD, 25));
 		btnQuit.setOnAction(e -> exitGame());
-		HBox hbox3 = new HBox(btnTryAgain, btnQuit);
-		hbox3.setAlignment(Pos.CENTER);
-		hbox3.setSpacing(10);
-		VBox vbox3 = new VBox(title(), lblscene3, hbox3);
+		HBox hbox32 = new HBox(btnTryAgain, btnQuit);
+		hbox32.setAlignment(Pos.CENTER);
+		hbox32.setSpacing(10);
+		VBox vbox3 = new VBox(title(), losemsg(), lb2scene3, hbox32);
 		vbox3.setAlignment(Pos.CENTER);
 		vbox3.setSpacing(10);
-		loseScene3 = new Scene(vbox3, width, height);
-		return loseScene3;
+		loseScene = new Scene(vbox3, width, height);
+		return loseScene;
 	}
 
-	public Scene winScene4() {
-		Label lblscene4 = new Label("You win! Congrats!");
+	public Scene winScene() {
+		Label lblscene4 = new Label("Congratulations!");
 		lblscene4.setFont(Font.font("Calibri", FontWeight.BOLD, 40));
 		lblscene4.setTextFill(Color.RED);
 		Button btnTryAgain = new Button("Play again");
@@ -172,11 +224,11 @@ public class MainGame extends Application {
 		HBox hbox4 = new HBox(btnTryAgain, btnQuit);
 		hbox4.setAlignment(Pos.CENTER);
 		hbox4.setSpacing(10);
-		VBox vbox4 = new VBox(title(), lblscene4, hbox4);
+		VBox vbox4 = new VBox(title(),winmsg(), lblscene4, hbox4);
 		vbox4.setAlignment(Pos.CENTER);
 		vbox4.setSpacing(10);
-		winScene4 = new Scene(vbox4, width, height);
-		return winScene4;
+		winScene = new Scene(vbox4, width, height);
+		return winScene;
 	}
 
 	public void keyListener() {
@@ -274,13 +326,13 @@ public class MainGame extends Application {
 	// Stops game and display losing scene
 	public void gameOver() {
 		timeline.stop();
-		window.setScene(loseScene3);
+		window.setScene(loseScene);
 	}
 
 	// Stops game and display winning scene
 	public void win() {
 		timeline.stop();
-		window.setScene(winScene4);
+		window.setScene(winScene);
 	}
 
 	// Pauses/resumes game
