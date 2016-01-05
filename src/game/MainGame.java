@@ -69,10 +69,10 @@ public class MainGame extends Application {
 
 		// Stage set up
 		window = primaryStage;
-//		window.setWidth(1000);
-//		window.setHeight(1000);
+		window.setWidth(1000);
+		window.setHeight(1000);
 		window.setTitle("Snake"); // sets the title of the window
-		window.setScene(winScene);
+		window.setScene(scene1);
 		window.setResizable(false); // the window's size cannot be changed
 		window.setOnCloseRequest(event -> exitGame()); // closing the
 														// window stops
@@ -162,9 +162,9 @@ public class MainGame extends Application {
 		lbl2scene1.setFont(Font.font("Calibri", FontWeight.BOLD, 25));
 		lbl2scene1.setTextFill(Color.DEEPPINK);
 		
-		Image imgStart = new Image("http://www.iyicreative.com/images/Start.png");
+		Image imgStart = new Image("start.png");
 		ImageView v1 = new ImageView(imgStart);
-		v1.setFitWidth(100);
+		v1.setFitWidth(200);
 		v1.setPreserveRatio(true);
 		
 		Button btnStart = new Button("", v1);
@@ -172,7 +172,7 @@ public class MainGame extends Application {
 			runGame();
 		});
 		
-		VBox vbox1 = new VBox(losemsg(), lbl1scene1, lbl2scene1, btnStart);
+		VBox vbox1 = new VBox(title(), lbl1scene1, lbl2scene1, btnStart);
 		vbox1.setAlignment(Pos.CENTER);
 		vbox1.setSpacing(10);
 		
@@ -187,7 +187,7 @@ public class MainGame extends Application {
 		tEat.setX(width / 2 - 40);
 		tEat.setFill(Color.CHARTREUSE);
 		tEat.setOpacity(0);
-
+		
 		gamePane = new Pane(snake, apple, tEat);
 		scene2 = new Scene(gamePane, width, height);
 		return scene2;
