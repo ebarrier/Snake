@@ -21,6 +21,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Paint;
+import parts.Block.Type;
 
 public class Snake extends Group {
 
@@ -34,6 +35,7 @@ public class Snake extends Group {
  
 		Block firstPart = new Block(0, 0); // creates the first block for the
 											// snake
+		firstPart.setType(Type.SNAKE);
 		this.getChildren().add(firstPart); // add the block to the group "snake"
 
 		head = (Block) this.getChildren().get(0); // set the first block of the
@@ -41,6 +43,8 @@ public class Snake extends Group {
 		head.setFill(Paint.valueOf("blue")); // set the colour of the head as
 												// blue
 		body = this.getChildren(); // set all the snake group as "body"
+		
+		
 	}
 
 	// Moves the snake
@@ -183,6 +187,7 @@ public class Snake extends Group {
 	// When an apple is met, a block is created an added to the snake's body
 	public void eat(Apple apple) {
 		Block block = new Block(-2, -2);
+		block.setType(Type.SNAKE);
 		body.add(block);
 	}
 

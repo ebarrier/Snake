@@ -47,8 +47,8 @@ public class MainGame extends Application {
 
 	private Snake snake = new Snake();
 	private Apple apple = new Apple();
-	public static final int width = 500;
-	public static final int height = 600;
+	public static final int width = 120;
+	public static final int height = 60;
 	private static int score;
 	private Text tEat = new Text();
 	private Stage window;
@@ -69,8 +69,8 @@ public class MainGame extends Application {
 
 		// Stage set up
 		window = primaryStage;
-		window.setWidth(1000);
-		window.setHeight(1000);
+		window.setWidth(600);
+		window.setHeight(600);
 		window.setTitle("Snake"); // sets the title of the window
 		window.setScene(scene1);
 		window.setResizable(false); // the window's size cannot be changed
@@ -312,9 +312,9 @@ public class MainGame extends Application {
 			}
 
 			// when snake eats itself or border
-			if (snake.collision()) {
-				gameOver();
-			}
+//			if (snake.collision()) {
+//				gameOver();
+//			}
 
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
