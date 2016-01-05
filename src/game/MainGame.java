@@ -69,8 +69,8 @@ public class MainGame extends Application {
 
 		// Stage set up
 		window = primaryStage;
-		window.setWidth(600);
-		window.setHeight(600);
+//		window.setWidth(600);
+//		window.setHeight(600);
 		window.setTitle("Snake"); // sets the title of the window
 		window.setScene(scene1);
 		window.setResizable(false); // the window's size cannot be changed
