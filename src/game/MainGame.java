@@ -12,6 +12,10 @@ all copies or substantial portions of the Software.
 
 package game;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
+
 import com.sun.javafx.scene.traversal.Direction;
 
 import javafx.animation.Animation;
@@ -41,6 +45,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import parts.Apple;
+import parts.Block;
 import parts.Snake;
 
 public class MainGame extends Application {
@@ -61,7 +66,7 @@ public class MainGame extends Application {
 	// Launches the game
 	@Override
 	public void start(Stage primaryStage) {
-		
+
 		scene1();
 		scene2();
 		loseScene();
@@ -69,8 +74,8 @@ public class MainGame extends Application {
 
 		// Stage set up
 		window = primaryStage;
-//		window.setWidth(600);
-//		window.setHeight(600);
+//		window.setWidth(1000);
+//		window.setHeight(1000);
 		window.setTitle("Snake"); // sets the title of the window
 		window.setScene(scene1);
 		window.setResizable(false); // the window's size cannot be changed
@@ -82,26 +87,26 @@ public class MainGame extends Application {
 		keyListener();
 
 	}
-	
-	//Design of the title
+
+	// Design of the title
 	public Node title() {
-        InnerShadow is = new InnerShadow();
-        is.setOffsetX(4.0f);
-        is.setOffsetY(4.0f);
-        
-        Text title = new Text("SNAKE");
-        title.setEffect(is);
-        title.setFill(Color.GREENYELLOW);
-        title.setFont(Font.font(null, FontWeight.BOLD, 100));
-        return title;
-    }
-	
+		InnerShadow is = new InnerShadow();
+		is.setOffsetX(4.0f);
+		is.setOffsetY(4.0f);
+
+		Text title = new Text("SNAKE");
+		title.setEffect(is);
+		title.setFill(Color.GREENYELLOW);
+		title.setFont(Font.font(null, FontWeight.BOLD, 100));
+		return title;
+	}
+
 	// Design of message when lose
 	public Node losemsg() {
 		Text lose = new Text("GAME OVER!");
 		lose.setFont(Font.font(null, FontWeight.BOLD, 80));
 		lose.setFill(Color.ORANGE);
-		
+
 		Blend blend = new Blend();
 		blend.setMode(BlendMode.MULTIPLY);
 
@@ -122,13 +127,13 @@ public class MainGame extends Application {
 		lose.setEffect(blend);
 		return lose;
 	}
-	
+
 	// Design of message when win
 	public Node winmsg() {
 		Text win = new Text("YOU WIN!");
 		win.setFont(Font.font(null, FontWeight.BOLD, 80));
 		win.setFill(Color.DEEPSKYBLUE);
-		
+
 		Blend blend = new Blend();
 		blend.setMode(BlendMode.MULTIPLY);
 
@@ -150,50 +155,50 @@ public class MainGame extends Application {
 		return win;
 	}
 
-	//Set up of the scene1
+	// Set up of the scene1
 	public Scene scene1() {
 		Label lbl1scene1 = new Label("Welcome to the Snake Game by Etienne Barrier!");
 		lbl1scene1.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
 		lbl1scene1.setTextFill(Color.STEELBLUE);
 		lbl1scene1.setWrapText(true);
-		lbl1scene1.setStyle("-fx-text-alignment: CENTER"); //CSS styling
-		
+		lbl1scene1.setStyle("-fx-text-alignment: CENTER"); // CSS styling
+
 		Label lbl2scene1 = new Label("Click to start the game");
 		lbl2scene1.setFont(Font.font("Calibri", FontWeight.BOLD, 25));
 		lbl2scene1.setTextFill(Color.DEEPPINK);
-		
+
 		Image imgStart = new Image("start.png");
 		ImageView v1 = new ImageView(imgStart);
 		v1.setFitWidth(200);
 		v1.setPreserveRatio(true);
-		
+
 		Button btnStart = new Button("", v1);
 		btnStart.setOnAction(e -> {
 			runGame();
 		});
-		
+
 		VBox vbox1 = new VBox(title(), lbl1scene1, lbl2scene1, btnStart);
 		vbox1.setAlignment(Pos.CENTER);
 		vbox1.setSpacing(10);
-		
+
 		scene1 = new Scene(vbox1, width, height);
 		return scene1;
 	}
 
-	//Set up of the scene2 (game itself)
+	// Set up of the scene2 (game itself)
 	public Scene scene2() {
 		tEat.setFont(Font.font(STYLESHEET_MODENA, FontWeight.BOLD, 40));
 		tEat.setY(height / 2);
 		tEat.setX(width / 2 - 40);
 		tEat.setFill(Color.CHARTREUSE);
 		tEat.setOpacity(0);
-		
+
 		gamePane = new Pane(snake, apple, tEat);
 		scene2 = new Scene(gamePane, width, height);
 		return scene2;
 	}
 
-	//Set up of the scene3 (when lose)
+	// Set up of the scene3 (when lose)
 	public Scene loseScene() {
 		Label lb2scene3 = new Label("Epic fail! Try again if you dare...");
 		lb2scene3.setFont(Font.font("Calibri", FontWeight.BOLD, 25));
@@ -217,7 +222,7 @@ public class MainGame extends Application {
 		return loseScene;
 	}
 
-	//Set up of the scene3 (when win)
+	// Set up of the scene3 (when win)
 	public Scene winScene() {
 		Label lblscene4 = new Label("Congratulations!");
 		lblscene4.setFont(Font.font("Calibri", FontWeight.BOLD, 40));
@@ -235,7 +240,7 @@ public class MainGame extends Application {
 		HBox hbox4 = new HBox(btnTryAgain, btnQuit);
 		hbox4.setAlignment(Pos.CENTER);
 		hbox4.setSpacing(10);
-		VBox vbox4 = new VBox(title(),winmsg(), lblscene4, hbox4);
+		VBox vbox4 = new VBox(title(), winmsg(), lblscene4, hbox4);
 		vbox4.setAlignment(Pos.CENTER);
 		vbox4.setSpacing(10);
 		winScene = new Scene(vbox4, width, height);
@@ -269,7 +274,7 @@ public class MainGame extends Application {
 
 	}
 
-	//Reset game
+	// Reset game
 	public void resetGame() {
 		score = 0;
 		window.setTitle("Snake " + score);
@@ -279,11 +284,11 @@ public class MainGame extends Application {
 		gamePane.getChildren().addAll(snake, apple, tEat);
 	}
 
-	//Run game
+	// Run game
 	public void runGame() {
 
 		window.setScene(scene2);
-		
+
 		// create a timer
 		timeline = new Timeline(new KeyFrame(Duration.millis(speed), ev -> {
 			snake.move(); // at each frequency, the snake moves
@@ -303,7 +308,7 @@ public class MainGame extends Application {
 
 			// when the apple appears on snake, it is relocated
 			if (snake.isOnSnake(apple)) {
-				apple.changeLocation();
+				changeLocation();
 			}
 
 			// when the snake fills the scene entirely
@@ -312,16 +317,35 @@ public class MainGame extends Application {
 			}
 
 			// when snake eats itself or border
-			if (snake.collision()) {
-				gameOver();
-			}
+			 if (snake.collision()) {
+			 gameOver();
+			 }
 
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.playFromStart();
 	}
 
-	
+	public void changeLocation() {
+		ArrayList<Block> blocks = new ArrayList<Block>();
+		for (int i = 0; i < MainGame.width / 20; i ++) {
+			for (int j = 0; j < MainGame.height / 20; j ++) {
+				blocks.add(new Block(i, j));
+			}
+		}
+
+		for (Iterator<Block> iterator = blocks.iterator(); iterator.hasNext();) {
+			Block block = (Block) iterator.next();
+			if (snake.isOnSnake(block)) {
+				iterator.remove();
+			}
+		}
+		
+		Block randomBlock = blocks.get(new Random().nextInt(blocks.size()));
+		apple.setX(randomBlock.getX());
+		apple.setY(randomBlock.getY());
+	}
+
 	/**
 	 * Fades a node until it becomes transparent. Inspired by
 	 * https://docs.oracle.com/javase/8/javafx/api/javafx/animation/
