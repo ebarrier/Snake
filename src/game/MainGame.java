@@ -45,10 +45,10 @@ import parts.Snake;
 
 public class MainGame extends Application {
 
-	private Snake snake = new Snake();
+	public Snake snake = new Snake();
 	private Apple apple = new Apple();
-	public static final int width = 120;
-	public static final int height = 60;
+	public static final int width = 600;
+	public static final int height = 600;
 	private static int score;
 	private Text tEat = new Text();
 	private Stage window;
@@ -312,9 +312,9 @@ public class MainGame extends Application {
 			}
 
 			// when snake eats itself or border
-//			if (snake.collision()) {
-//				gameOver();
-//			}
+			if (snake.collision()) {
+				gameOver();
+			}
 
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);

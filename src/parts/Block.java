@@ -17,7 +17,7 @@ import javafx.scene.shape.Rectangle;
 
 public class Block extends Rectangle {
 	
-	enum Type {APPLE, SNAKE, EMPTY};
+	enum Type {APPLE, SNAKE};
 	private Type type;
 	
 	//Final size defined for the block of the game
@@ -32,7 +32,6 @@ public class Block extends Rectangle {
 		setArcWidth(0);
 		setArcHeight(0);
 		setFill(Color.BLACK);
-		type = Type.EMPTY;
 	}
 
 	public Block() {
@@ -45,16 +44,6 @@ public class Block extends Rectangle {
 	public Type getType() {
 		return this.type;
 	}
-	
-//	public double getaX() {
-//		int x = (int) this.getX();
-//		return x;
-//	}
-//	
-//	public double getaY() {
-//		int y = (int) this.getY();
-//		return y;
-//	}
 	
 	
 	
