@@ -4,7 +4,7 @@ import game.MainGame;
 import javafx.scene.paint.Color;
 
 public class Apple extends Block {
-
+	
 	// Creates an Apple block at random location
 	public Apple() {
 		super(getRandomX(), getRandomY());

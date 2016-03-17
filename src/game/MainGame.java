@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sun.javafx.scene.traversal.Direction;
 
 import javafx.animation.Animation;
@@ -62,11 +65,14 @@ public class MainGame extends Application {
 	private Timeline timeline;
 	private boolean isPaused;
 	private int speed = 100;
+	
+	private static final Logger logstartup = LogManager.getLogger("startup");
+	private static final Logger loguseraction = LogManager.getLogger("user-actions");
 
 	// Launches the game
 	@Override
 	public void start(Stage primaryStage) {
-
+		logstartup.debug("Game initialization");
 		scene1();
 		scene2();
 		loseScene();
@@ -83,7 +89,7 @@ public class MainGame extends Application {
 														// window stops
 														// the game
 		window.show(); // displays the elements of the game
-
+		logstartup.debug("Stage loaded");
 		keyListener();
 
 	}
@@ -173,6 +179,7 @@ public class MainGame extends Application {
 		v1.setPreserveRatio(true);
 
 		Button btnStart = new Button("", v1);
+		logstartup.debug("Start button loaded");
 		btnStart.setOnAction(e -> {
 			runGame();
 		});
@@ -182,6 +189,7 @@ public class MainGame extends Application {
 		vbox1.setSpacing(10);
 
 		scene1 = new Scene(vbox1, width, height);
+		logstartup.debug("Start scene loaded");
 		return scene1;
 	}
 
@@ -195,6 +203,7 @@ public class MainGame extends Application {
 
 		gamePane = new Pane(snake, apple, tEat);
 		scene2 = new Scene(gamePane, width, height);
+		logstartup.debug("Game scene loaded");
 		return scene2;
 	}
 
@@ -253,15 +262,19 @@ public class MainGame extends Application {
 			switch (event.getCode()) {
 			case LEFT:
 				snake.directionOrders(Direction.LEFT);
+				loguseraction.info("LEFT");
 				break;
 			case RIGHT:
 				snake.directionOrders(Direction.RIGHT);
+				loguseraction.info("RIGHT");
 				break;
 			case UP:
 				snake.directionOrders(Direction.UP);
+				loguseraction.info("UP");
 				break;
 			case DOWN:
 				snake.directionOrders(Direction.DOWN);
+				loguseraction.info("DOWN");
 				break;
 			case ESCAPE:
 				exitGame();
@@ -276,6 +289,7 @@ public class MainGame extends Application {
 
 	// Reset game
 	public void resetGame() {
+		loguseraction.info("Game reset");
 		score = 0;
 		window.setTitle("Snake " + score);
 		gamePane.getChildren().removeAll(snake, apple, tEat);
@@ -286,7 +300,8 @@ public class MainGame extends Application {
 
 	// Run game
 	public void runGame() {
-
+		logstartup.debug("Game started!");
+		loguseraction.info("Game started!");
 		window.setScene(scene2);
 
 		// create a timer
@@ -369,6 +384,7 @@ public class MainGame extends Application {
 
 	// Stops game and display winning scene
 	public void win() {
+		loguseraction.info("Game won!!");
 		timeline.stop();
 		window.setScene(winScene);
 	}
@@ -376,9 +392,11 @@ public class MainGame extends Application {
 	// Pauses/resumes game
 	public void pause() {
 		if (isPaused) {
+			loguseraction.info("Game unpaused");
 			timeline.play();
 			isPaused = false;
 		} else {
+			loguseraction.info("Game paused");
 			timeline.pause();
 			isPaused = true;
 		}
@@ -386,6 +404,7 @@ public class MainGame extends Application {
 
 	// Stops the games and closes the window
 	public void exitGame() {
+		loguseraction.info("Game exited!");
 		try {
 			stop();
 		} catch (Exception e) {

@@ -14,6 +14,9 @@ package parts;
 
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sun.javafx.scene.traversal.Direction;
 
 import game.MainGame;
@@ -29,6 +32,8 @@ public class Snake extends Group {
 	private ArrayList<Direction> directionOrders = new ArrayList<Direction>();
 	public static Block head;
 	public ObservableList<Node> body;
+	
+	private static final Logger loguseraction = LogManager.getLogger("user-actions");
 
 	public Snake() {
  
@@ -160,6 +165,7 @@ public class Snake extends Group {
 		for (int i = 1; i < this.getChildren().size(); i++) {
 			Block current = (Block) body.get(i);
 			if (head.getX() == current.getX() && head.getY() == current.getY()) {
+				loguseraction.info("Game lost: snake collision");
 				return true;
 			}
 		}
@@ -169,6 +175,7 @@ public class Snake extends Group {
 	// Checks whether the head of the snake meets the border of the screen
 	public boolean isBorderCollision() {
 		if (head.getX() > MainGame.width - 10 || head.getX() < 0 || head.getY() > MainGame.height || head.getY() < 0) {
+			loguseraction.info("Game lost: border collision");
 			return true;
 		}
 		return false;

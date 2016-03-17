@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" configDebug="true">
+  <Appenders>
+    <Console name="CONSOLE" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} RootLogger %-5level %logger{36} - %msg%n"/>
+    </Console>
+    <Console name="CONSOLE2" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
+    </Console>
+    <RollingFile name="useractions" fileName="logs/useractions.log"
+                 filePattern="logs/$${date:yyyy-MM}/useractions-%d{dd}-%i.log">
+      <PatternLayout>
+        <Pattern>%d %p %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy />
+      </Policies>
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+  	<logger name="startup" level="debug" additivity="false">
+  		<AppenderRef ref="CONSOLE2"/>
+  	</logger>
+  	<logger name="user-actions" level="info" additivity="false">
+  		<AppenderRef ref="useractions"/>
+  	</logger>
+    <Root level="debug">
+      <AppenderRef ref="CONSOLE"/>
+    </Root>
+  </Loggers>
+</log4j:configuration>
